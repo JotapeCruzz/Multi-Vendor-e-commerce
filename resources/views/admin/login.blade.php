@@ -51,14 +51,16 @@
                 <form action="{{ route('admin.login.request') }}" method="post">@csrf
                     <div class="input-group mb-1">
                         <div class="form-floating">
-                            <input id="loginEmail" name="email" type="email" class="form-control" placeholder="E-mail">
+                            <input id="loginEmail" name="email" type="email" class="form-control" placeholder="E-mail"
+                            @if(isset($_COOKIE["email"])) value="{{ $_COOKIE['email'] }}" @endif>
                             <label for="loginEmail">E-mail</label>
                         </div>
                         <div class="input-group-text"> <span class="bi bi-envelope"></span> </div>
                     </div>
                     <div class="input-group mb-1">
                         <div class="form-floating">
-                            <input id="loginPassword" name="password" type="password" class="form-control" placeholder="********">
+                            <input id="loginPassword" name="password" type="password" class="form-control" placeholder="********"
+                            @if(isset($_COOKIE["password"])) value="{{ $_COOKIE['password'] }}" @endif>
                             <label for="loginPassword">Password</label>
                         </div>
                         <div class="input-group-text"> <span class="bi bi-lock-fill"></span> </div>
@@ -79,8 +81,9 @@
                     <div class="row">
                         <div class="col-8 d-inline-flex align-items-center">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="remember">
-                                <label class="form-check-label" for="flexCheckDefault">
+                                <input class="form-check-input" type="checkbox" id="remember" name="remember"
+                                @if(isset($_COOKIE['email'])) checked="" @endif>
+                                <label class="form-check-label" for="remember">
                                     Remember Me
                                 </label>
                             </div>
