@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use Illuminate\Http\Request;
 use Auth;
+use App\Http\Requests\Admin\LoginRequest;
+
 
 class AdminController extends Controller
 {
@@ -28,7 +30,7 @@ class AdminController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(LoginRequest $request)
     {
         $data = $request->all();
         if(Auth::guard('admin')->attempt(['email'=>$data['email'],'password'=>$data['password']])){
