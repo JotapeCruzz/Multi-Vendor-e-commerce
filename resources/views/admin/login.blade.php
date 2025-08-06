@@ -42,11 +42,7 @@
     <div class="login-box">
         <div class="card card-outline card-primary">
             <div class="card-header">
-<<<<<<< HEAD
                 <a href="#" class="link-dark text-center link-offset-2 link-opacity-100 link-opacity-50-hover">
-=======
-                <a href="../index2.html" class="link-dark text-center link-offset-2 link-opacity-100 link-opacity-50-hover">
->>>>>>> 4f73749c93bb2ab88a938c3095d9f92e5e2e9333
                     <h1 class="mb-0"> <b>Admin</b>LTE
 </h1> </a>
             </div>
@@ -73,24 +69,17 @@
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     @endif
-<<<<<<< HEAD
                     @foreach ($errors->all() as $error)
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         <strong>Error</strong> {!! $error !!}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                     @endforeach
-=======
->>>>>>> 4f73749c93bb2ab88a938c3095d9f92e5e2e9333
                     <!--begin::Row-->
                     <div class="row">
                         <div class="col-8 d-inline-flex align-items-center">
                             <div class="form-check">
-<<<<<<< HEAD
                                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="remember">
-=======
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
->>>>>>> 4f73749c93bb2ab88a938c3095d9f92e5e2e9333
                                 <label class="form-check-label" for="flexCheckDefault">
                                     Remember Me
                                 </label>
