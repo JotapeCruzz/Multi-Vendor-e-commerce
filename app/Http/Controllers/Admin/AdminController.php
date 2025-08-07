@@ -8,6 +8,7 @@ use App\Services\Admin\AdminService;
 use Illuminate\Http\Request;
 use Auth;
 use App\Http\Requests\Admin\LoginRequest;
+use Session;
 
 
 class AdminController extends Controller
@@ -17,6 +18,7 @@ class AdminController extends Controller
      */
     public function index()
     {
+        Session::put("page","dashboard");
         return view('admin.dashboard');
     }
 
@@ -58,7 +60,8 @@ class AdminController extends Controller
      */
     public function edit(Admin $admin)
     {
-        //
+        Session::put('page','dashboard');
+        return view('admin.update_password');
     }
 
     /**

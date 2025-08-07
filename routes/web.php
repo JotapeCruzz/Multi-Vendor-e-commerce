@@ -19,6 +19,9 @@ Route::prefix('admin')->group(function (){
         // Dashboard route
         Route::resource('dashboard', AdminController::class)->only(['index']);
 
+        // Admin password update
+        Route::get('update-password', [AdminController::class,'edit'])->name('admin.update.password');
+
         // Admin logout
         Route::get('logout', [AdminController::class, 'destroy'])->name('admin.logout');
 
