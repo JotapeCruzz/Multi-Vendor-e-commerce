@@ -3,16 +3,24 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Admin;
-use App\Services\Admin\AdminService;
 use Illuminate\Http\Request;
-use Auth;
+use App\Services\Admin\AdminService;
 use App\Http\Requests\Admin\LoginRequest;
+use App\Models\Admin;
+use Auth;
 use Session;
 
 
 class AdminController extends Controller
 {
+
+    protected $adminService;
+
+    // Inject AdminService using Constructor
+    public function __construct(AdminService $adminService)
+    {
+        $this->adminService = $adminService;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -36,8 +44,7 @@ class AdminController extends Controller
     public function store(LoginRequest $request)
     {
         $data = $request->all();
-        $service = new AdminService();
-        $loginStatus = $service->login($data);
+        $loginStatus = $this->adminService->login($data);
 
         if ($loginStatus == 1) {
             return redirect()->route('dashboard.index');
@@ -79,5 +86,11 @@ class AdminController extends Controller
     {
         Auth::guard('admin')->logout();
         return redirect()->route('admin.login');
+    }
+
+    public function verifyPassword(Request $request)
+    {
+        $data = $request->all();
+        return $this->adminService->verifyPassword($data);
     }
 }

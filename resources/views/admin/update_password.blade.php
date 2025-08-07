@@ -55,6 +55,7 @@
                                     <div class="mb-3">
                                         <label for="current_pwd" class="form-label">Current Password</label>
                                         <input type="password" class="form-control" id="current_pwd" name="current_pwd">
+                                        <span id="verifyPwd"></span>
                                     </div>
 
                                     <div class="mb-3">
