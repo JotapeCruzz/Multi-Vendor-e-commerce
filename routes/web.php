@@ -19,11 +19,14 @@ Route::prefix('admin')->group(function (){
         // Dashboard route
         Route::resource('dashboard', AdminController::class)->only(['index']);
 
-        // Admin password update
+        // Display update password page route
         Route::get('update-password', [AdminController::class,'edit'])->name('admin.update.password');
 
         //Verify password route
         Route::post('verify-password', [AdminController::class,'verifyPassword'])->name('admin.verify.password');
+
+        //Update password route
+        Route::post('admin/update-password', [AdminController::class,'updatePasswordRequest'])->name('admin.update-password.request');
 
         // Admin logout
         Route::get('logout', [AdminController::class, 'destroy'])->name('admin.logout');

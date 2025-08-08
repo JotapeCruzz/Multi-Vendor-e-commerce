@@ -1,5 +1,6 @@
 <?php
 namespace App\Services\Admin;
+use App\Models\Admin;
 use Auth;
 use Hash;
 
@@ -32,6 +33,28 @@ class AdminService
         } else {
             return "false";
         }
+    }
+
+    public function updatePassword($data)
+    {
+        //Check if the current password is correct
+        if(Hash::check($data['current_pwd'], Auth::guard('admin')->user()->password)){
+            //Check if new password and confirm password match
+            if($data['new_pwd'] == $data['confirm_pwd']){
+                Admin::where('email', Auth::guard('admin')->user()->email)->
+                update(['password'=>bcrypt($data['new_pwd'])]);
+                $status = "success";
+                $message="Password has been updated successfully!";
+
+            }else{
+                $status = "error";
+                $message= "The passwords doesn't match!";
+            }
+        }else{
+            $status = "error";
+            $message= "Your current password is incorrect!";
+        }
+        return ["status"=>$status, "message"=>$message];
     }
 }
 

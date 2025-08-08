@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\Admin\AdminService;
 use App\Http\Requests\Admin\LoginRequest;
+use App\Http\Requests\Admin\PasswordRequest;
 use App\Models\Admin;
 use Auth;
 use Session;
@@ -26,7 +27,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        Session::put("page","dashboard");
+        Session::put("page", "dashboard");
         return view('admin.dashboard');
     }
 
@@ -48,7 +49,7 @@ class AdminController extends Controller
 
         if ($loginStatus == 1) {
             return redirect()->route('dashboard.index');
-        }else {
+        } else {
             return redirect()->back()->with('error_message', 'Invalid Email or Password');
         }
 
@@ -67,7 +68,7 @@ class AdminController extends Controller
      */
     public function edit(Admin $admin)
     {
-        Session::put('page','dashboard');
+        Session::put('page', 'dashboard');
         return view('admin.update_password');
     }
 
@@ -92,5 +93,20 @@ class AdminController extends Controller
     {
         $data = $request->all();
         return $this->adminService->verifyPassword($data);
+    }
+
+    public function updatePasswordRequest(PasswordRequest $request)
+    {
+        if ($request->isMethod('post')) {
+            $data = $request->input();
+
+            $pwdStatus = $this->adminService->updatePassword($data);
+        }
+        if ($pwdStatus['status'] == "success") {
+            return redirect()->back()->with('success-message', $pwdStatus['message']);
+        } else {
+            return redirect()->back()->with('error_message', $pwdStatus['message']);
+        }
+
     }
 }
