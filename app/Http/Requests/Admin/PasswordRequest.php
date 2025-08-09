@@ -31,13 +31,13 @@ class PasswordRequest extends FormRequest
     public function messages()
     {
         return [
-            'current_pwd.required'=>'Current password is required.',
-            'current_pwd.min'=> 'Current password must be at least 6 characters.',
-            'new_pwd.required'=> 'New password is required.',
-            'new_pwd.min'=> 'New password must be at least 6 characters.',
-            'new_pwd.different'=> 'New password must be different from the current password.',
-            'confirm_pwd.required'=> 'Confirm password is required.',
-            'confirm_pwd.same'=>'Confirm password must match the new password.'
+            'current_pwd.required'=>'Current password is required!',
+            'current_pwd.min'=> 'Current password must be at least 6 characters!',
+            'new_pwd.required'=> 'New password is required!',
+            'new_pwd.min'=> 'New password must be at least 6 characters!',
+            'new_pwd.different'=> 'New password must be different from the current password!',
+            'confirm_pwd.required'=> 'Confirm password is required!',
+            'confirm_pwd.same'=>'Confirm password must match the new password!'
         ];
     }
 }

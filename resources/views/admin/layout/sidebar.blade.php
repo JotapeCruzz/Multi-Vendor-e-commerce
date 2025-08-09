@@ -37,9 +37,9 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="./index3.html" class="nav-link">
+                            <a href="{{ url('admin\update-details') }}" class="nav-link {{ (Session::get('page') == 'update-details')? 'active': ''}}">
                                 <i class="nav-icon bi bi-circle"></i>
-                                <p>Dashboard v3</p>
+                                <p>Update Details</p>
                             </a>
                         </li>
                     </ul>

@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Services\Admin\AdminService;
-use App\Http\Requests\Admin\LoginRequest;
 use App\Http\Requests\Admin\PasswordRequest;
+use App\Http\Requests\Admin\DetailRequest;
+use App\Http\Requests\Admin\LoginRequest;
+use App\Http\Controllers\Controller;
+use App\Services\Admin\AdminService;
+use Illuminate\Http\Request;
 use App\Models\Admin;
-use Auth;
+use Intervention\Image\ImageManager;
 use Session;
+use Auth;
 
 
 class AdminController extends Controller
@@ -103,10 +105,31 @@ class AdminController extends Controller
             $pwdStatus = $this->adminService->updatePassword($data);
         }
         if ($pwdStatus['status'] == "success") {
-            return redirect()->back()->with('success-message', $pwdStatus['message']);
+            return redirect()->back()->with('success_message', $pwdStatus['message']);
         } else {
             return redirect()->back()->with('error_message', $pwdStatus['message']);
         }
 
+    }
+
+    public function editDetails()
+    {
+        Session::put('page', 'update-details');
+        return view('admin.update_details');
+    }
+
+    public function updateDetails(DetailRequest $request)
+    {
+        Session::put('page', 'update-details');
+        if ($request->isMethod('post')){
+            $this->adminService->updateDetails($request);
+            return redirect()->back()->with('success_message', 'Admin Details have been updated succesfully!');
+        }
+    }
+
+    public function deleteProfileImage(Request $request)
+    {
+        $status = $this->adminService->deleteProfileImage($request->admin_id);
+        return response()->json($status);
     }
 }

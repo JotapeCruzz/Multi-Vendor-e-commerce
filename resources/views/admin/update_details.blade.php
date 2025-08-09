@@ -14,7 +14,7 @@
                         <ol class="breadcrumb float-sm-end">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
                             <li class="breadcrumb-item active" aria-current="page">
-                                Update Password
+                                Upadate Details
                             </li>
                         </ol>
                     </div>
@@ -36,9 +36,10 @@
                         <div class="card card-primary card-outline mb-4">
                             <!--begin::Header-->
                             <div class="card-header">
-                                <div class="card-title">Update Password</div>
+                                <div class="card-title">Update Details</div>
                             </div>
                             <!--end::Header-->
+
                             @if(Session::has('error_message'))
                                 <div class="alert alert-danger alert-dismissible fade show m-3" role="alert">
                                     <strong>Error: </strong> {{ Session::get('error_message') }}
@@ -59,7 +60,7 @@
                             @endforeach
 
                             <!--begin::Form-->
-                            <form method="post" action="{{ route('admin.update-password.request') }}"> @csrf
+                            <form method="post" action="{{ route('admin.update-details.request') }}" enctype="multipart/form-data"> @csrf
                                 <!--begin::Body-->
                                 <div class="card-body">
                                     <div class="mb-3">
@@ -72,19 +73,27 @@
                                         </div>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="current_pwd" class="form-label">Current Password</label>
-                                        <input type="password" class="form-control" id="current_pwd" name="current_pwd">
-                                        <span id="verifyPwd"></span>
+                                        <label for="name" class="form-label">Name</label>
+                                        <input type="text" class="form-control" id="name" name="name" 
+                                        value="{{ Auth::guard('admin')->user()->name }}">
+                                        
                                     </div>
 
                                     <div class="mb-3">
-                                        <label for="new_pwd" class="form-label">New Password</label>
-                                        <input type="password" class="form-control" id="new_pwd" name="new_pwd">
+                                        <label for="mobile" class="form-label">Mobile</label>
+                                        <input type="mobile" class="form-control" id="mobile" name="mobile"
+                                        value="{{ Auth::guard('admin')->user()->mobile }}">
                                     </div>
-
                                     <div class="mb-3">
-                                        <label for="confirm_pwd" class="form-label">Confirm Password</label>
-                                        <input type="password" class="form-control" id="confirm_pwd" name="confirm_pwd">
+                                        <label for="image" class="form-label">Image</label>
+                                        <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                                        @if(!empty(Auth::guard('admin')->user()->image))
+                                            <div id="profileImageBlock">
+                                                <a target="_blank" href="{{ url('admin/images/photos/'.Auth::guard('admin')->user()->image) }}">View</a> |
+                                                <input type="hidden" name="curent_image" id="current_image" value="{{ Auth::guard('admin')->user()->image }}">
+                                                <a href="javascript:void(0);" id="deleteProfileImage" data-admin-id="{{ Auth::guard('admin')->user()->id }}" class="text-danger">Delete</a>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                                 <!--end::Body-->
