@@ -10,14 +10,6 @@
                     <div class="col-sm-6">
                         <h3 class="mb-0">Admin Management</h3>
                     </div>
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-end">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">
-                                Update Password
-                            </li>
-                        </ol>
-                    </div>
                 </div>
                 <!--end::Row-->
             </div>
@@ -63,7 +55,7 @@
                                 <!--begin::Body-->
                                 <div class="card-body">
                                     <div class="mb-3">
-                                        <label for="email" class="form-label">Email address</label>
+                                        <label for="email" class="form-label">E-mail address</label>
                                         <input type="email" class="form-control" id="email" aria-describedby="emailHelp"
                                             value="{{ Auth::guard('admin')->user()->email }}" readonly
                                             style="background-color: #ccc">

@@ -8,7 +8,15 @@
                 <!--begin::Row-->
                 <div class="row">
                     <div class="col-sm-6">
-                        <h3 class="mb-0">Admin Management</h3>
+                        <h3 class="mb-0">Sub Administrator Management</h3>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-end">
+                            <li class="breadcrumb-item"><a href="{{ asset('admin/subadmins') }}">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">
+                                {{ $title }}
+                            </li>
+                        </ol>
                     </div>
                 </div>
                 <!--end::Row-->
@@ -28,7 +36,7 @@
                         <div class="card card-primary card-outline mb-4">
                             <!--begin::Header-->
                             <div class="card-header">
-                                <div class="card-title">Update Details</div>
+                                <div class="card-title">{{ $title }}</div>
                             </div>
                             <!--end::Header-->
 
@@ -52,38 +60,41 @@
                             @endforeach
 
                             <!--begin::Form-->
-                            <form method="post" action="{{ route('admin.update-details.request') }}" enctype="multipart/form-data"> @csrf
+                            <form name="subadminForm" id="subadminForm" method="post" 
+                            action="{{ url('admin/add-edit-subadmin/request') }}" enctype="multipart/form-data"> @csrf
                                 <!--begin::Body-->
+                                @if(!empty($subadmindata['id']))
+                                    <input type="hidden" name="id" value="{{ $subadmindata['id'] }}">
+                                @endif
                                 <div class="card-body">
                                     <div class="mb-3">
-                                        <label for="email" class="form-label">E-mail address</label>
-                                        <input type="email" class="form-control" id="email" aria-describedby="emailHelp"
-                                            value="{{ Auth::guard('admin')->user()->email }}" readonly
-                                            style="background-color: #ccc">
-                                        <div id="emailHelp" class="form-text">
-                                            We'll never share your email with anyone else.
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="name" class="form-label">Name</label>
-                                        <input type="text" class="form-control" id="name" name="name" 
-                                        value="{{ Auth::guard('admin')->user()->name }}">
-                                        
+                                        <label for="email" class="form-label">E-mail</label>
+                                        <input type="email" class="form-control" id="email" name="email" placeholder="E-mail"
+                                        @if(!empty($subadmindata['email'])) value="{{ $subadmindata['email'] }}" readonly style="background-color: #ccc" @endif>
                                     </div>
 
                                     <div class="mb-3">
+                                        <label for="password" class="form-label">Password</label>
+                                        <input type="password" class="form-control" id="password" name="password" placeholder="********">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Name</label>
+                                        <input type="text" class="form-control" id="name" name="name" placeholder="Name"
+                                        @if(!empty(@$subadmindata['name'])) value="{{ $subadmindata['name'] }}" @endif>
+                                    </div>
+                                    <div class="mb-3">
                                         <label for="mobile" class="form-label">Mobile</label>
-                                        <input type="tel" class="form-control" id="mobile" name="mobile"
-                                        value="{{ Auth::guard('admin')->user()->mobile }}">
+                                        <input type="tel" class="form-control" id="mobile" name="mobile" placeholder="Your phone"
+                                        @if(!empty(@$subadmindata['mobile'])) value="{{ $subadmindata['mobile'] }}" @endif>
                                     </div>
                                     <div class="mb-3">
                                         <label for="image" class="form-label">Image</label>
                                         <input type="file" class="form-control" id="image" name="image" accept="image/*">
-                                        @if(!empty(Auth::guard('admin')->user()->image))
+                                        @if(!empty($subadmindata['image']))
                                             <div id="profileImageBlock">
-                                                <a target="_blank" href="{{ url('admin/images/photos/'.Auth::guard('admin')->user()->image) }}">View</a> |
-                                                <input type="hidden" name="curent_image" id="current_image" value="{{ Auth::guard('admin')->user()->image }}">
-                                                <a href="javascript:void(0);" id="deleteProfileImage" data-admin-id="{{ Auth::guard('admin')->user()->id }}" class="text-danger">Delete</a>
+                                                <a target="_blank" href="{{ url('admin/images/photos/'.$subadmindata['image']) }}">View Photo</a>
+                                                <input type="hidden" name="curent_image" id="current_image" value="{{ $subadmindata['image'] }}">
                                             </div>
                                         @endif
                                     </div>

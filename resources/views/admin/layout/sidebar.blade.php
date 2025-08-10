@@ -25,21 +25,31 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ url('admin\dashboard') }}" class="nav-link {{ (Session::get('page') == 'dashboard')? 'active': ''}}">
+                            <a href="{{ url('admin/dashboard') }}"
+                                class="nav-link {{ (Session::get('page') == 'dashboard') ? 'active' : ''}}">
                                 <i class="nav-icon bi bi-circle"></i>
                                 <p>Dashboard</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('admin\update-password') }}" class="nav-link {{ (Session::get('page') == 'update-password')? 'active': ''}}">
+                            <a href="{{ url('admin/update-details') }}"
+                                class="nav-link {{ (Session::get('page') == 'update-details') ? 'active' : ''}}">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>Update Details</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url('admin/update-password') }}"
+                                class="nav-link {{ (Session::get('page') == 'update-password') ? 'active' : ''}}">
                                 <i class="nav-icon bi bi-circle"></i>
                                 <p>Update Password</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('admin\update-details') }}" class="nav-link {{ (Session::get('page') == 'update-details')? 'active': ''}}">
+                            <a href="{{ url('admin/subadmins') }}"
+                                class="nav-link {{ (Session::get('page') == 'subadmins') ? 'active' : ''}}">
                                 <i class="nav-icon bi bi-circle"></i>
-                                <p>Update Details</p>
+                                <p>Sub Administrator</p>
                             </a>
                         </li>
                     </ul>

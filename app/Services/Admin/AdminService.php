@@ -4,6 +4,7 @@ namespace App\Services\Admin;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
 use App\Models\Admin;
+use App\Models\AdminsRole;
 use Auth;
 use Hash;
 
@@ -11,22 +12,33 @@ class AdminService
 {
     public function login($data)
     {
-        if (Auth::guard('admin')->attempt((['email' => $data['email'], 'password' => $data['password']]))) {
+        $admin = Admin::where('email', $data['email'])->first();
 
-            // Remember Admin Email and Password
-            if (!empty($data["remember"])) {
-                setcookie("email", $data["email"], time() + 3600);
-                setcookie("password", $data["password"], time() + 3600);
-            } else {
-                setcookie("email", "");
-                setcookie("password", "");
+        if($admin){
+            if($admin->status==0){
+                return "inactive";
             }
+        
 
-            $loginStatus = 1;
+            if (Auth::guard('admin')->attempt((['email' => $data['email'], 'password' => $data['password'], 'status'=>1]))) {
+
+                // Remember Admin Email and Password
+                if (!empty($data["remember"])) {
+                    setcookie("email", $data["email"], time() + 3600);
+                    setcookie("password", $data["password"], time() + 3600);
+                } else {
+                    setcookie("email", "");
+                    setcookie("password", "");
+                }
+
+                return "success";
+            } else {
+                return "invalid";
+            }
         } else {
-            $loginStatus = 0;
+            return "invalid";
         }
-        return $loginStatus;
+       
     }
 
     public function verifyPassword($data)
@@ -103,6 +115,98 @@ class AdminService
         }
         return ['status' => false, 'message' => 'Profile image not found!'];
 
+    }
+
+    public function subadmins()
+    {
+        $subadmins = Admin::where('role', 'subadmin')->get();
+        return $subadmins;
+    }
+
+    public function updateSubadminStatus($data)
+    {
+        $status = ($data['status']=="Active")? 0 : 1;
+        Admin::where('id', $data['subadmin_id'])->update(['status'=>$status]);
+        return $status;
+    }
+
+    public function deleteSubadmin($id)
+    {
+        Admin::where('id', $id)->delete();
+        $message='Sub Administrator deleted successfully!';
+        return array("message" => $message);
+    }
+
+    public function addEditSubadmin($request)
+    {
+        $data = $request->all();
+
+        if(isset($data['id']) && $data['id']!=""){
+            $subadmindata = Admin::find($data['id']);
+            $message = "Sub Administrator updated successfully!";
+        }else{
+            $subadmindata = new Admin;
+            $message = "Sub Administrator added successfully!";
+        }
+
+        //Upload Admin Image
+        if($request->hasFile('image')){
+            $image_tmp = $request->file('image');
+            if($image_tmp->isValid()){
+                $manager = new ImageManager(new Driver());
+                $image = $manager->read($image_tmp);
+                $extension = $image_tmp->getClientOriginalExtension();
+                $imageName = rand(111,99999).'.'.$extension;
+                $image_path = public_path('admin/images/photos/'.$imageName);
+                $image->save($image_path);
+            }
+        }else if(!empty($data['current_image'])){
+            $imageName = $data['current_image'];
+        }else{
+            $imageName = "";
+        }
+
+        $subadmindata->image = $imageName;
+        $subadmindata->name = $data['name'];
+        $subadmindata->mobile = $data['mobile'];
+
+        if(!isset($data['id'])){
+            $subadmindata->email = $data['email'];
+            $subadmindata->role = 'subadmin';
+            $subadmindata->status = 1;
+        }
+
+        if($data['password']!=""){
+            $subadmindata->password = bcrypt($data['password']);
+        }
+
+        $subadmindata->save();
+        return array("message"=>$message);
+    }
+
+    public function updateRole($request)
+    {
+        $data = $request->all();
+
+        //Remove existing role before updating
+        AdminsRole::where('subadmin_id', $data['subadmin_id'])->delete();
+
+        //Assigm new roles dynamically
+        foreach($data as $key=>$value){
+            if (!is_array($value)) continue; //Skip non-module fields
+            
+            $view = isset($value['view']) ? $value['view'] : 0;
+            $edit = isset($value['edit']) ? $value['edit'] : 0;
+            $full = isset($value['full']) ? $value['full'] : 0;
+            AdminsRole::insert([
+                'subadmin_id' => $data['subadmin_id'],
+                'module' => $key,
+                'view_acess' => $view,
+                'edit_acess' => $edit,
+                'full_acess' => $full,
+            ]);
+        }
+        return ['message'=> 'Sub Administrator Roles updated successfully"'];
     }
 }
 
